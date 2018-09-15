@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script src="../node_modules/vue-resource/dist/vue-resource.js"></script>
+  <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"
+          integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="app" class="container">
+  <h1>vue-resource插件讲解</h1>
+  <a href="javascript:;" class="btn btn-primary" @click="get">Get请求</a>
+  <a href="javascript:;" class="btn btn-primary" @click="post">Post请求</a>
+  <a href="javascript:;" class="btn btn-primary" @click="jsonp">Jsonp请求</a>
+  <a href="javascript:;" class="btn btn-primary" @click="http">Http请求</a>
+  <span>{{msg}}</span>
+</div>
+<script>
+  new Vue({
+    el: "#app",
+    data: {
+      msg: ''
+    },
+    mounted:function () {
+      Vue.http.interceptors.push(function (request, next) {
+        console.log("request init.");
+        next(function (response) {
+          console.log("response init.");
+          return response;
+        })
+      });
+    },
+    http:{
+      root:"http://localhost:63342/vue-demo1/"
+    },
+    methods: {
+      get: function () {
+        this.$http.get("package.json", {
+          params: {
+            userId: "101"
+          },
+          headers: {
+            token: "abcd"
+          }
+        }).then(res => {
+          this.msg = res.data;
+        }, error => {
+          this.msg = error;
+        });
+      },
+      post: function () {
+        this.$http.post("package.json", {
+          userId: '102'
+        }, {
+          headers: {
+            access_token: "abc"
+          }
+        }).then(function (res) {
+          this.msg = res.data;
+        });
+      },
+      jsonp: function () {
+        this.$http.jsonp("http://www.imooc.com/course/AjaxCourseMembers?ids=796", {
+          // this.msg = res.data;
+        })
+      },
+      http:function () {
+        this.$http({
+          url:"package.json",
+          params:{
+            userId:"103"
+          },
+          headers:{
+            token:"123"
+          },
+          timeOut:5,
+          before:function () {
+            console.log("before init")
+          }
+        }).then(function (res) {
+          this.msg = res.data;
+        });
+      }
+    }
+  });
+</script>
+</body>
+</html>
