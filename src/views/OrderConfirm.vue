@@ -102,7 +102,7 @@
               <ul>
                 <li>
                   <span>Item subtotal:</span>
-                  <span>{{subTotal | currency('¥')}}</span>
+                  <span>{{subTotal | currency('¥')}}1</span>
                 </li>
                 <li>
                   <span>Shipping:</span>
