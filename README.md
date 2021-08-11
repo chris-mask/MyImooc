@@ -1,6 +1,6 @@
-# vue-demo1
+# vue-imooc
 
-> A Vue.js project
+> 一个基于vue+node+express+mongoDb开发的小商城
 
 ## Build Setup
 
